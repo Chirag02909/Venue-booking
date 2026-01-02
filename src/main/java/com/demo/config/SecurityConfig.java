@@ -44,8 +44,13 @@
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/venues", "/api/venues/**").permitAll()
+                            .requestMatchers("/api/razorpay/webhook").permitAll() // Webhook doesn't need JWT
+                            .requestMatchers("/api/razorpay/**").authenticated()
                             .requestMatchers("/api/owner/**").authenticated()
                             .requestMatchers("/api/bookings/**").permitAll()
+                            .requestMatchers("/api/payments/**").authenticated()
+                            .requestMatchers("/api/reviews/**").permitAll()
+//                            .requestMatchers("/api/analytics/**").hasAnyRole("ADMIN", "OWNER")
                             .anyRequest().authenticated()
                     )
                     .sessionManagement(session -> session
@@ -74,5 +79,4 @@
         public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
             return config.getAuthenticationManager();
         }
-
     }
